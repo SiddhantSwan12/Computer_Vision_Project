@@ -1,0 +1,23 @@
+# Core dependencies
+opencv-contrib-python==4.7.0.72
+numpy==1.24.3
+
+# Deep learning dependencies
+torch==2.0.1
+torchvision==0.15.2
+ultralytics==8.0.196  # YOLOv8
+
+# Computer vision and image processing
+scikit-image==0.20.0
+supervision==0.14.0   # Helper for YOLO detection visualization
+
+# Data analysis and visualization
+pandas==2.0.1
+matplotlib==3.7.1
+seaborn==0.12.2
+scikit-learn==1.2.2
+
+# Utilities
+tqdm==4.65.0
+pillow==9.5.0
+pathlib==1.0.1 

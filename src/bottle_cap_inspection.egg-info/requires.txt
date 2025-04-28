@@ -1,0 +1,14 @@
+opencv-contrib-python==4.7.0.72
+numpy==1.24.3
+torch==2.0.1
+torchvision==0.15.2
+ultralytics==8.0.196
+scikit-image==0.20.0
+supervision==0.14.0
+pandas==2.0.1
+matplotlib==3.7.1
+seaborn==0.12.2
+scikit-learn==1.2.2
+tqdm==4.65.0
+pillow==9.5.0
+pathlib==1.0.1

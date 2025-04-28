@@ -1,0 +1,2 @@
+[console_scripts]
+cap-inspection = detection.integrated_cap_inspection:main

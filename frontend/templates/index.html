@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manufacturing Vision System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-industry"></i>
+                    <div class="logo-text">
+                        <h1>Manufacturing Vision System</h1>
+                        <p>Real-time object detection and tracking</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button id="darkModeToggle" class="icon-button" aria-label="Toggle dark mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button id="mobileMenuToggle" class="icon-button mobile-only" aria-label="Toggle menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <div class="dashboard">
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header mobile-only">
+                    <h2>Controls</h2>
+                    <button id="closeSidebar" class="icon-button" aria-label="Close sidebar">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <section class="control-panel panel">
+                    <h2><i class="fas fa-sliders-h"></i> Controls</h2>
+                    
+                    <div class="control-group">
+                        <h3>Video Source</h3>
+                        <div class="button-group">
+                            <button id="sampleVideoBtn" class="active" aria-pressed="true">
+                                <i class="fas fa-file-video"></i> Sample
+                            </button>
+                            <button id="webcamBtn" aria-pressed="false">
+                                <i class="fas fa-camera"></i> Webcam
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h3>Custom Video</h3>
+                        <div class="input-group">
+                            <input type="file" id="customVideoFile" accept="video/*" aria-label="Select custom video file">
+                            <button id="customVideoBtn">
+                                <i class="fas fa-upload"></i> Load
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h3>Display Options</h3>
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="showBoxes" checked>
+                                <span class="checkbox-custom"></span>
+                                <span>Bounding Boxes</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="showContours" checked>
+                                <span class="checkbox-custom"></span>
+                                <span>Contours</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="showIDs" checked>
+                                <span class="checkbox-custom"></span>
+                                <span>Track IDs</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="control-group">
+                        <h3>Anomaly Detection</h3>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="anomalyToggle">
+                            <span class="checkbox-custom"></span>
+                            <span>Enable Anomaly Detection</span>
+                        </label>
+                        <div class="input-group">
+                            <input type="file" id="referenceImageInput" accept="image/*">
+                            <button id="uploadReferenceImageBtn">
+                                <i class="fas fa-upload"></i> Upload Reference Image
+                            </button>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="info-panel panel">
+                    <h2><i class="fas fa-chart-line"></i> Statistics</h2>
+                    <div class="stat-grid">
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            <div class="stat-content">
+                                <span class="stat-label">FPS</span>
+                                <span id="fpsValue" class="stat-value">--</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-cube"></i></div>
+                            <div class="stat-content">
+                                <span class="stat-label">Objects</span>
+                                <span id="objectsValue" class="stat-value">--</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                            <div class="stat-content">
+                                <span class="stat-label">Processing</span>
+                                <span id="processingTimeValue" class="stat-value">--</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon"><i class="fas fa-signal"></i></div>
+                            <div class="stat-content">
+                                <span class="stat-label">Status</span>
+                                <span id="statusValue" class="stat-value status-active">Active</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="legend-panel panel">
+                    <h2><i class="fas fa-info-circle"></i> Legend</h2>
+                    <div class="legend-items">
+                        <div class="legend-item">
+                            <div class="color-box" style="background-color: #00FF00;"></div>
+                            <span>Bounding Box: Object detection</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="color-box" style="background-color: #FF0000;"></div>
+                            <span>Contour: Precise object shape</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="color-box" style="background-color: #0000FF;"></div>
+                            <span>Track ID: Object identifier</span>
+                        </div>
+                    </div>
+                </section>
+            </aside>
+            
+            <main class="main-content">
+                <section class="video-container panel">
+                    <div class="video-header">
+                        <h2><i class="fas fa-video"></i> <span id="sourceLabel">Sample Video</span></h2>
+                        <div class="video-controls">
+                            <button id="screenshotBtn" class="icon-button" aria-label="Take screenshot" data-tooltip="Take Screenshot">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                            <button id="fullscreenBtn" class="icon-button" aria-label="Toggle fullscreen" data-tooltip="Fullscreen">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="video-wrapper" id="videoContainer">
+                        <img id="videoFeed" src="{{ url_for('video_feed') }}" alt="Video Stream">
+                        <div class="video-overlay" id="videoOverlay">
+                            <div class="overlay-message">
+                                <i class="fas fa-circle-notch fa-spin"></i>
+                                <span>Initializing video stream...</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <section class="object-details panel">
+                    <div class="panel-header">
+                        <h2><i class="fas fa-list"></i> Object Details</h2>
+                        <div class="panel-actions">
+                            <span class="object-count" id="objectCount">0 objects</span>
+                            <button id="clearObjectsBtn" class="icon-button" data-tooltip="Clear all">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="object-list" id="objectList">
+                        <p class="no-objects">No objects detected yet</p>
+                    </div>
+                </section>
+            </main>
+        </div>
+        
+        <footer class="app-footer">
+            <div class="footer-content">
+                <p>&copy; <span id="currentYear"></span> Manufacturing Vision System</p>
+            </div>
+        </footer>
+    </div>
+    
+    <!-- Loading overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner"></div>
+        <div class="loading-text">Loading video stream...</div>
+    </div>
+    
+    <!-- Toast notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+    
+    <!-- Screenshot preview modal -->
+    <div id="screenshotModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Screenshot Preview</h3>
+                <button id="closeModal" class="icon-button" aria-label="Close modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img id="screenshotPreview" alt="Screenshot preview">
+            </div>
+            <div class="modal-footer">
+                <button id="downloadScreenshot" class="primary-button">
+                    <i class="fas fa-download"></i> Download
+                </button>
+                <button id="cancelScreenshot" class="secondary-button">Cancel</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
